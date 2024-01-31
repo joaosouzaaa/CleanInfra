@@ -1,4 +1,5 @@
 using CleanInfra.API.DependencyInjection;
+using CleanInfra.API.Settings.MigrationSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
@@ -19,5 +20,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MigrateDatabase();
 
 app.Run();
