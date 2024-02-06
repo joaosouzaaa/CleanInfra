@@ -3,18 +3,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanInfra.API.Repositories.BaseRepositories;
 
-public abstract class BaseRepository<TEntity>(AppDbContext dbContext) : IDisposable
+public abstract class BaseRepository<TEntity> : IDisposable
     where TEntity : class
 {
-    protected DbSet<TEntity> DbContextSet => dbContext.Set<TEntity>();
+    protected readonly AppDbContext _dbContext;
+    protected DbSet<TEntity> DbContextSet => _dbContext.Set<TEntity>();
+
+    public BaseRepository(AppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public void Dispose()
     {
-        dbContext.Dispose();
+        _dbContext.Dispose();
 
         GC.SuppressFinalize(this);
     }
 
     protected async Task<bool> SaveChangesAsync() =>
-        await dbContext.SaveChangesAsync() > 0;
+        await _dbContext.SaveChangesAsync() > 0;
 }

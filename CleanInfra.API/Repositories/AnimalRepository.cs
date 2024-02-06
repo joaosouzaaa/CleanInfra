@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanInfra.API.Repositories;
 
-public sealed class AnimalRepository(AppDbContext dbContext) : BaseRepository<Animal>(dbContext), IAnimalRepository
+public sealed class AnimalRepository : BaseRepository<Animal>, IAnimalRepository
 {
+    public AnimalRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
+
     public async Task<bool> AddAsync(Animal animal)
     {
         await DbContextSet.AddAsync(animal);
@@ -17,7 +21,7 @@ public sealed class AnimalRepository(AppDbContext dbContext) : BaseRepository<An
 
     public async Task<bool> UpdateAsync(Animal animal)
     {
-        dbContext.Entry(animal).State = EntityState.Modified;
+        _dbContext.Entry(animal).State = EntityState.Modified;
 
         return await SaveChangesAsync();
     }

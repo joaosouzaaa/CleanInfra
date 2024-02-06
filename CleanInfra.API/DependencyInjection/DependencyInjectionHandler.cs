@@ -1,6 +1,4 @@
 ﻿using CleanInfra.API.DatabaseContexts;
-using CleanInfra.API.Interfaces.Repositories;
-using CleanInfra.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanInfra.API.DependencyInjection;
@@ -18,7 +16,6 @@ public static class DependencyInjectionHandler
             options.EnableSensitiveDataLogging();
         });
 
-        services.AddScoped<IAnimalRepository, AnimalRepository>();
-        services.AddScoped<IZooRepository, ZooRepository>();
+        services.AddRepositoriesDependencyInjection();
     }
 }
